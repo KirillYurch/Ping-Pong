@@ -1,7 +1,8 @@
 from pygame import *
 '''Необходимые классы'''
 
-
+score2 = 0
+score3 = 0
 #класс-родитель для спрайтов
 class GameSprite(sprite.Sprite):
    def __init__(self, player_image, player_x, player_y, player_speed, wight, height):
@@ -48,13 +49,14 @@ FPS = 60
 
 
 #создания мяча и ракетки   
-racket1 = Player('racket.png', 30, 200, 4, 50, 150) 
-racket2 = Player('racket.png', 520, 200, 4, 50, 150)
-ball = GameSprite('tenis_ball.png', 200, 200, 4, 50, 50)
+racket1 = Player('1234.png', 30, 200, 4, 50, 150) 
+racket2 = Player('1234.png', 520, 200, 4, 50, 150)
+ball = GameSprite('tennisball.png', 200, 200, 4, 50, 50)
 
 
 font.init()
 font = font.Font(None, 35)
+score1 = font.render(str(score2) +':'+ str(score3),True,(180,0,0))
 lose1 = font.render('PLAYER 1 LOSE!', True, (180, 0, 0))
 lose2 = font.render('PLAYER 2 LOSE!', True, (180, 0, 0))
 
@@ -75,6 +77,8 @@ while game:
        ball.rect.x += speed_x
        ball.rect.y += speed_y
 
+       window.blit(score1,(200,450))
+
 
        if sprite.collide_rect(racket1, ball) or sprite.collide_rect(racket2, ball):
            speed_x *= -1
@@ -87,21 +91,23 @@ while game:
 
        #если мяч улетел дальше ракетки, выводим условие проигрыша для первого игрока
        if ball.rect.x < 0:
-           finish = True
            window.blit(lose1, (200, 200))
-           game_over = True
+           score2 += 1
+           ball = GameSprite('tennisball.png', 200, 200, 4, 50, 50)
 
 
        #если мяч улетел дальше ракетки, выводим условие проигрыша для второго игрока
        if ball.rect.x > win_width:
-           finish = True
            window.blit(lose2, (200, 200))
-           game_over = True
-
+           score3 += 1
+           ball = GameSprite('tennisball.png', 200, 200, 4, 50, 50)
 
        racket1.reset()
        racket2.reset()
        ball.reset()
+
+        
+
 
 
    display.update()
